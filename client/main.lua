@@ -13,6 +13,7 @@ local function modules_load()
 	local files = love.filesystem.getDirectoryItems(dir)
 
 	for _, file in ipairs(files) do
+		print("loading module:", file)
 		modules[file] = loadfile(dir .. "/" .. file)()
 	end
 end
