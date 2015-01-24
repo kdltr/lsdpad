@@ -24,13 +24,7 @@ function love.update(dt)
    local toread, _, err = socket.select(ins, {}, 0.1)
    for _,client in ipairs(toread) do
       if client == server then
-<<<<<<< local
-         local client = server:accept()
-         client:settimeout(0)
-         ins[#ins+1] = client
-=======
          init_client(server:accept())
->>>>>>> other
       else
          local msg, err = client:receive("*l")
          if not msg then
@@ -61,14 +55,6 @@ function init_client(client)
 end
 
 function handle_msg(client, msg)
-<<<<<<< local
    print(client, msg)
-=======
-   
->>>>>>> other
 end
-<<<<<<< local
-=======
 
-
->>>>>>> other
