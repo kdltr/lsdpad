@@ -33,7 +33,11 @@ function modules_load()
 
    for _, file in ipairs(files) do
       print("loading module:", file)
-      --modules[file] = loadfile(dir .. "/" .. file)()
+      local thunk, err = loadfile(dir .. "/" .. file)
+      if not thunk then
+         error(err)
+      end
+      modules[file] = thunk()
    end
 end
 

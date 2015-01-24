@@ -67,7 +67,7 @@ function love.load(args)
    server = socket.connect(args[3], tonumber(args[4]))
    if not server then
       print("failed to connect to server")
-      love.event.quit()
+      os.exit()
    end
    init_screen()
    server:settimeout(0)
@@ -128,9 +128,11 @@ function love.keypressed(key)
       or key == "right"
       or key == "up"
       or key == "down"
+      or key == "home"
+      or key == "end"
       then
          send("dir " .. key)
-   elseif key == "backspace" or key == "enter" then
+   elseif key == "backspace" or key == "return" or key == "delete" then
       send(key)
    end
 
