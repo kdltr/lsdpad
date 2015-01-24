@@ -7,16 +7,17 @@ local ins = {server}
 -- clients info
 local ci = {}
 
-s = {
+s =
+{
    {
-      { letter = 'a', r = 255, v = 255, b = 255 },
-      { letter = 'b', r = 255, v = 255, b = 255 },
-      { letter = 'c', r = 255, v = 255, b = 255 },
+      { 'a', 255, 255, 255 },
+      { 'b', 255, 255, 255 },
+      { ' ', 255, 255, 255 },
    },
    {
-      { letter = 'd', r = 255, v = 255, b = 255 },
-      { letter = 'e', r = 255, v = 255, b = 255 },
-      { letter = 'f', r = 255, v = 255, b = 255 },
+      { 'd', 255, 255, 255 },
+      { 'e', 255, 255, 255 },
+      { 'f', 255, 255, 255 },
    },
 }
 
@@ -48,7 +49,7 @@ function init_client(client)
    client:send(string.format("dump %d\n", #s));
    for _, line in ipairs(s) do
       client:send(table.concat(map(line, function (item)
-         return string.format("%s %d %d %d ", item.letter, item.r, item.v, item.b);
+         return string.format("%s %d %d %d ", item[1], item[2], item[3], item[4]);
       end
       )) .. "\n");
    end
