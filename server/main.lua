@@ -4,6 +4,8 @@ local server = socket.bind("0.0.0.0", "1234")
 
 local ins = {server}
 
+math.randomseed(os.time())
+
 -- clients info
 local ci = {}
 
@@ -43,8 +45,12 @@ function love.update(dt)
    end
 end
 
+function new_color()
+   return { math.random(128) + 127, math.random(128) + 127, math.random(128) + 127 }
+end
+
 function init_client(client)
-   ci[client] = { x = 1, y = 1, color = { 0xff, 0xff, 0 }}
+   ci[client] = { x = 1, y = 1, color = new_color()}
    ins[#ins+1] = client
    client:send(string.format("dump %d\n", #s));
    for _, line in ipairs(s) do
@@ -108,7 +114,7 @@ function parsers.dir(client, msg)
 end
 
 function parsers.char(client, msg)
-   local m = string.match(msg, "char (.)")
+   local m = string.match(msg, "char (.+)")
    if not m then return false end
    local cinfo = ci[client]
 
