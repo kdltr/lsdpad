@@ -65,6 +65,7 @@ end
 function love.load(args)
    local font = love.graphics.newFont("terminus.ttf", 20)
    love.graphics.setFont(font)
+   love.keyboard.setKeyRepeat(true)
 
    fontwidth = font:getWidth("m")
    fontheight = font:getHeight("m")
@@ -85,6 +86,8 @@ function love.load(args)
 end
 
 function love.draw()
+   modules_call("pre_draw")
+   
    -- background
    --love.graphics.setColor(255, 255, 255)
    --love.graphics.rectangle("fill", 0, 0, 800, 600)
@@ -107,7 +110,7 @@ function love.draw()
       end
    end
 
-   modules_call("draw") -- XXX should modules hide text? if not put that at the top of love.draw
+   modules_call("post_draw")
 end
 
 
