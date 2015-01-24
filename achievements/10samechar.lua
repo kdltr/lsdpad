@@ -8,8 +8,9 @@ end
 
 function m.char(client, char)
    if activated then return end
-   table.insert(client.last_chars, char[0])
-   table.remove(client.last_chars, 0)
+   table.insert(client.last_chars, char)
+   table.remove(client.last_chars, 1)
+   print(table.concat(client.last_chars))
    local c = false
    local all_same = true
    for _, v in ipairs(client.last_chars) do
