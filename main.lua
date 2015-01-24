@@ -1,6 +1,7 @@
 -- shared declarations
 s = {{}}
 cols = 60
+modules = {}
 
 -- utils
 function map(table, fun)
@@ -53,7 +54,7 @@ function modules_load()
    local files = love.filesystem.getDirectoryItems(dir)
 
    for _, file in ipairs(files) do
-      local filename = string.match(file, "^([^.]+\\.lua)$")
+      local filename = string.match(file, "^(.+%.lua)$")
       if filename then
          print("loading module:", file)
          local thunk, err = loadfile(dir .. "/" .. file)
@@ -74,6 +75,7 @@ end
 
 
 function love.load(args)
+   modules_load()
    if args[2] == "server" then
       require("server.main", args)
    else

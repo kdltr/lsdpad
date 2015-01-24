@@ -48,6 +48,8 @@ function love.update(dt)
       end
       print(client)
    end
+
+   modules_call("server_update", dt)
 end
 
 function color_diff(ref, value)
@@ -63,12 +65,11 @@ function new_color()
       color_diff(0.33, hue) * 192,
       color_diff(0.66, hue) * 192,
    }
-   print(table.concat(r, ", "))
    return r
 end
 
 function init_client(client)
-   ci[client] = { x = 1, y = 1, color = new_color() }
+   ci[client] = { x = 1, y = 1, color = new_color(), s = client }
    ins[#ins+1] = client
    client:send(string.format("dump %d\n", #s));
    for _, line in ipairs(s) do
@@ -78,6 +79,7 @@ function init_client(client)
       )) .. "\n");
    end
    client:settimeout(0)
+   modules_call("init_client", ci[client])
 end
 
 local parsers = {}
@@ -133,6 +135,7 @@ function parsers.dir(client, msg)
       end
    end
    client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
+   modules_call("dir", cinfo, m)
    return true
 end
 
@@ -157,6 +160,7 @@ function parsers.pos(client, msg)
       cinfo.x = x
    end
    client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
+   modules_call("pos", cinfo, x, y)
    return true
 end
 
@@ -179,6 +183,7 @@ function parsers.newline(client, msg)
          peer:send(string.format("move %d %d\n", peerinfo.x, peerinfo.y))
       end
    end
+   modules_call("newline", cinfo)
    return true
 end
 
@@ -186,6 +191,7 @@ function parsers.delete(client, msg)
    if msg ~= "delete" then return false end
    local cinfo = ci[client]
    parsers_do_del_char(cinfo.x, cinfo.y)
+   modules_call("delete", cinfo)
    return true
 end
 
@@ -200,6 +206,7 @@ function parsers.backspace(client, msg)
       x = #s[y] + 1
    end
    parsers_do_del_char(x, y)
+   modules_call("backspace", cinfo)
    return true
 end
 
@@ -268,6 +275,7 @@ function parsers.char(client, msg)
       end
    end
 
+   modules_call("char", cinfo, m)
    return true
 end
 

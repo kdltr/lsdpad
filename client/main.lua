@@ -2,20 +2,15 @@ local socket = require("socket")
 
 cursor = {1, 1}
 
--- Modules loading
-modules = {}
-
 local function init_screen()
    local msg, err = server:receive("*l")
    local nlines = string.match(msg, "dump (%d+)")
 
    for i = 1, nlines do
-      print("new line: " .. i)
       s[i] = {}
 
       local msg, err = server:receive("*l")
       for char, r, v, b in string.gmatch(msg, "(.-) (%d+) (%d+) (%d+) ") do
-         print(char, r, v, b)
          table.insert(s[i], {char, tonumber(r), tonumber(v), tonumber(b)})
       end
    end
@@ -88,10 +83,6 @@ function love.load(args)
 
    fontwidth = font:getWidth("m")
    fontheight = font:getHeight("m")
-
-   for k,v in pairs(args) do
-      print(k,v)
-   end
 
    server = socket.connect(args[3], tonumber(args[4]))
    if not server then
@@ -185,5 +176,4 @@ function love.mousepressed(x, y, button)
    modules_call("mousepressed", x, y, button)
 end
 
-modules_load()
 love.load(arg)
