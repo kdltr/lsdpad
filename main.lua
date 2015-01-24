@@ -9,6 +9,10 @@ function modules_load()
    end
 end
 
-function love.load()
-   require "server.main"
+function love.load(args)
+   if args[2] == "server" then
+      require("server.main", args)
+   else
+      require("client.main", args)
+   end
 end
