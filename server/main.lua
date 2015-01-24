@@ -50,8 +50,21 @@ function love.update(dt)
    end
 end
 
+function color_diff(ref, value)
+   local r1 = math.abs(ref - value)
+   local r2 = math.abs((ref + 1) - value)
+   return math.max(0, 0.5 - r1, 0.5 - r2) / 0.5
+end
+
 function new_color()
-   return { math.random(128), math.random(128), math.random(128) }
+   local hue = math.random()
+   local r = {
+      color_diff(0, hue) * 191,
+      color_diff(0.33, hue) * 128,
+      color_diff(0.66, hue) * 255,
+   }
+   print(table.concat(r, ", "))
+   return r
 end
 
 function init_client(client)
