@@ -17,8 +17,8 @@ function m.server_update(ci, dt)
    end
 
    if ci.fury.timer >= 1 then
+      ach("fury")
       m.activated = true
-      ach(ci.s, "fury")
    end
 end
 
