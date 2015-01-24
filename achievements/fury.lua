@@ -1,5 +1,3 @@
-local activated = false
-
 local m = {}
 
 function m.init_client(ci)
@@ -11,8 +9,6 @@ function m.char(ci, char)
 end
 
 function m.server_update(ci, dt)
-   if activated then return end
-
    if ci.fury.input then
       ci.fury.timer = ci.fury.timer + dt
       ci.fury.input = false
@@ -21,7 +17,7 @@ function m.server_update(ci, dt)
    end
 
    if ci.fury.timer >= 1 then
-      activated = true
+      m.activated = true
       ach(ci.s, "fury")
    end
 end

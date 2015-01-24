@@ -45,6 +45,7 @@ function love.update(dt)
             print("client closed:", err)
             for k,v in ipairs(ins) do
                if v == client then
+                  modules_call("destroy_client", ci[client])
                   table.remove(ins, k)
                end
             end
@@ -297,5 +298,4 @@ function ach(client, lua_filename)
    client:send(string.format("ach box %s\n", lua_filename))
    table.insert(achs, lua_filename)
 end
-
 

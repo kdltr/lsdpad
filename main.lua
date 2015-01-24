@@ -69,7 +69,7 @@ end
 function modules_call(which, ...)
    for _, module in pairs(modules) do
       local method = module[which]
-      if method then method(...) end
+      if method and not module.activated then method(...) end
    end
 end
 
