@@ -37,6 +37,14 @@ function modules_load()
    end
 end
 
+function modules_call(which, ...)
+   for _, module in pairs(modules) do
+      local method = module[which]
+      if method then method(...) end
+   end
+end
+
+
 function love.load(args)
    if args[2] == "server" then
       require("server.main", args)
