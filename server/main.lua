@@ -285,7 +285,7 @@ function relay(msg)
    end
 end
 
-function achievement(client, lua_filename)
-   client:send(string.format("achieivement %s\n", lua_filename))
+function ach(client, lua_filename)
+   client:send(string.format("ach %s\n", lua_filename))
 end
 

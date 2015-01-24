@@ -52,7 +52,7 @@ function parsers.insline(msg)
 end
 
 function parsers.achievement(msg)
-   local cmd = msg:match("^achievement (.+)$")
+   local cmd = msg:match("^ach (.+)$")
    local module = modules[cmd]
 
    if module then
