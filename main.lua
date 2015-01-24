@@ -1,3 +1,16 @@
+-- shared declarations
+s = {{ letter = 'a', r = 255, v = 255, b = 255}}
+
+-- utils
+function map(table, fun)
+   local r = {}
+   for k, v in pairs(table) do
+      r[k] = fun(v)
+   end
+   return r
+end
+
+-- loader
 function modules_load()
    print("loading modules…")
    local dir = "achievements"
