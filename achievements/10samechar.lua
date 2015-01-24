@@ -21,6 +21,7 @@ end
 
 function m.activate(box)
   if box then box_push('10 times the same character!') end
+  music.playloop(2)
 end
 
 return m

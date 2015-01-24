@@ -1,3 +1,4 @@
+require("lib.music")
 local socket = require("socket")
 
 cursor = {1, 1}
@@ -95,6 +96,8 @@ function love.load(args)
    fontwidth = font:getWidth("m")
    fontheight = font:getHeight("m")
 
+   music.load()
+
    server = socket.connect(args[3], tonumber(args[4]))
    if not server then
       print("failed to connect to server")
@@ -150,6 +153,8 @@ function love.update(dt)
    else
       handle_client_msg(msg)
    end
+
+   music.update(dt)
 
    modules_call("update", dt)
 end
