@@ -294,8 +294,8 @@ function relay(msg)
    end
 end
 
-function ach(client, lua_filename)
-   client:send(string.format("ach box %s\n", lua_filename))
+function ach(lua_filename)
+   relay(string.format("ach box %s\n", lua_filename))
    table.insert(achs, lua_filename)
 end
 
