@@ -6,6 +6,8 @@ local ins = {server}
 
 local achs = {}
 
+local parsers = {}
+
 math.randomseed(os.time())
 
 -- clients info
@@ -91,8 +93,6 @@ function init_client(client)
       client:send(string.format("ach %s\n", lua_filename))
    end
 end
-
-local parsers = {}
 
 function handle_msg(client, msg)
    print(client, "*" .. msg .. "*")
