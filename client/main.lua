@@ -95,10 +95,10 @@ end
 
 function love.draw()
    modules_call("pre_draw")
-   
+
    -- background
-   --love.graphics.setColor(255, 255, 255)
-   --love.graphics.rectangle("fill", 0, 0, 800, 600)
+   love.graphics.setColor(255, 255, 255)
+   love.graphics.rectangle("fill", 0, 0, 800, 600)
 
    -- border
    --love.graphics.setColor(180, 180, 180)
