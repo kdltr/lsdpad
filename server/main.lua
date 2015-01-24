@@ -47,6 +47,7 @@ function love.update(dt)
                if v == client then
                   modules_call("destroy_client", ci[client])
                   table.remove(ins, k)
+                  ci[client] = nil
                end
             end
          else
