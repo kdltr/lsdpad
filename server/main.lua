@@ -31,6 +31,10 @@ s =
 }
 
 function love.update(dt)
+   for _,v in pairs(ci) do
+      modules_call("server_update", v, dt)
+   end
+
    local toread, _, err = socket.select(ins, {}, 0.1)
    for _,client in ipairs(toread) do
       if client == server then
@@ -51,7 +55,6 @@ function love.update(dt)
       print(client)
    end
 
-   modules_call("server_update", dt)
 end
 
 function color_diff(ref, value)
