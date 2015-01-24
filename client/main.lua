@@ -36,6 +36,15 @@ function parsers.ins(msg)
    if x then
       print(x, y, letter, r, v, b)
       ins_char(tonumber(x), tonumber(y), {letter, tonumber(r), tonumber(v), tonumber(b)})
+      return true
+   end
+end
+
+function parsers.delete(msg)
+   local x, y = msg:match("^delete (%d+) (%d+)$")
+   if x then
+      del_char(x, y)
+      return true
    end
 end
 
