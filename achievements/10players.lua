@@ -5,7 +5,7 @@ local m = {}
 function m.init_client()
    players = players + 1
 
-   if players == 2 then
+   if players == 10 then
       ach("10players")
       m.activated = true
    end
