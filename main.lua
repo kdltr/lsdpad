@@ -54,14 +54,14 @@ function modules_load()
    local files = love.filesystem.getDirectoryItems(dir)
 
    for _, file in ipairs(files) do
-      local filename = string.match(file, "^(.+%.lua)$")
+      local filename = string.match(file, "^(.+)%.lua$")
       if filename then
          print("loading module:", file)
          local thunk, err = loadfile(dir .. "/" .. file)
          if not thunk then
             error(err)
          end
-         modules[file] = thunk()
+         modules[filename] = thunk()
       end
    end
 end
