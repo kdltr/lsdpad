@@ -25,6 +25,27 @@ function ins_char(x, y, char)
    end
 end
 
+function del_char(x, y)
+   if x < 1 then
+      if y == 1 then return false end
+      x = #s[y - 1] + 1
+      for _, v in ipairs(s[y]) do
+         table.insert(s[y - 1], v)
+      end
+      table.remove(s, y + 1)
+   elseif x <= #s[y] then
+      table.remove(s[y], x)
+   elseif x > #s[y] then
+      if y == #s then return false end
+      for _, v in ipairs(s[y + 1]) do
+         table.insert(s[y], v)
+      end
+      table.remove(s, y)
+   end
+   return true
+end
+
+
 -- loader
 function modules_load()
    print("loading modules…")

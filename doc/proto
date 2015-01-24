@@ -10,16 +10,17 @@ dump nombre_de_lignes
 
 move x y
 ins x y letter r v b
-backspace x y
+suppr x y
 insline y
 rpc command param param param...
 
 client->server
 --------------
 
-dir left|right|down|up
+dir left|right|down|up|home|end
 backspace
-enter
+return
+delete
 pos x y
 char letter
 

@@ -21,6 +21,11 @@ s =
       { 'e', 255, 0, 0 },
       { 'f', 255, 0, 255 },
    },
+   {
+      { 'g', 255, 0, 127 },
+      { 'h', 0, 0, 128 },
+      { 'i', 0, 128, 255 },
+   },
 }
 
 function love.update(dt)
@@ -75,7 +80,11 @@ function parsers.dir(client, msg)
    local m = string.match(msg, "dir (%a+)")
    if not m then return false end
    local cinfo = ci[client]
-   if m == "up" then
+   if m == "end" then
+      cinfo.x = #s[cinfo.y] + 1
+   elseif m == "home" then
+      cinfo.x = 1
+   elseif m == "up" then
       if cinfo.y > 1 then
          cinfo.y = cinfo.y - 1;
          if cinfo.x > #s[cinfo.y] + 1 then
@@ -111,6 +120,15 @@ function parsers.dir(client, msg)
       end
    end
    client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
+   return true
+end
+
+function parsers.delete(client, msg)
+   if msg ~= "delete" then return false end
+   local cinfo = ci[client]
+   if del_char(cinfo.x, cinfo.y) then
+      relay(string.format("suppr", cinfo.x, cinfo.y))
+   end
    return true
 end
 
