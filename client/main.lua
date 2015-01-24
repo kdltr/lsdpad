@@ -48,6 +48,14 @@ function parsers.delete(msg)
    end
 end
 
+function parsers.insline(msg)
+   local x, y = msg:match("^insline (%d+) (%d+)$")
+   if x then
+      ins_line(tonumber(x), tonumber(y))
+      return true
+   end
+end
+
 local function handle_client_msg(msg)
    print(msg)
    for _, parser in pairs(parsers) do
