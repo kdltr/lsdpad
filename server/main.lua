@@ -296,8 +296,8 @@ function relay(msg)
 end
 
 function ach(lua_filename)
-   modules_call("ach", lua_filename)
    relay(string.format("ach box %s\n", lua_filename))
    table.insert(achs, lua_filename)
+   modules_call("ach", lua_filename)
 end
 
