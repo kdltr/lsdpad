@@ -1,0 +1,21 @@
+Une commande par ligne !!
+
+server->client
+--------------
+
+dump nombre_de_lignes
+...
+...
+...
+
+ins x y letter r v b
+backspace x y
+insline y
+
+client->server
+--------------
+
+key letter
+
+
+
