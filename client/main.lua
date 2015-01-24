@@ -56,6 +56,17 @@ function parsers.insline(msg)
    end
 end
 
+function parsers.achievement(msg)
+   local cmd = msg:match("^achievement (.+)$")
+   local module = modules[cmd]
+
+   if module then
+      module.activate()
+   end
+
+   return true
+end
+
 local function handle_client_msg(msg)
    print(msg)
    for _, parser in pairs(parsers) do

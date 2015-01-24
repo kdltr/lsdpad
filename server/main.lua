@@ -263,3 +263,8 @@ function relay(msg)
       client:send(msg)
    end
 end
+
+function achievement(client, lua_filename)
+   client:send(string.format("achieivement %s\n", lua_filename))
+end
+
