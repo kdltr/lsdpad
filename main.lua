@@ -1,6 +1,6 @@
 -- shared declarations
 s = {{}}
-cols = 78
+cols = 60
 
 -- utils
 function map(table, fun)

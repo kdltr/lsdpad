@@ -51,7 +51,7 @@ function love.update(dt)
 end
 
 function new_color()
-   return { math.random(128) + 127, math.random(128) + 127, math.random(128) + 127 }
+   return { math.random(128), math.random(128), math.random(128) }
 end
 
 function init_client(client)
