@@ -1,5 +1,6 @@
 require("lib.music")
 local socket = require("socket")
+local box = require("lib.box")
 
 cursor = {1, 1}
 
@@ -114,20 +115,10 @@ function love.draw()
    love.graphics.setColor(255, 255, 255)
    love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
 
-   modules_call("pre_draw")
-
    local d = (love.window.getWidth() - (cols * fontwidth)) / 2
    love.graphics.translate(d - fontwidth, d*0.8 - fontheight)
 
-   -- border
-   love.graphics.setColor(220, 220, 220)
-   love.graphics.setLineStyle("rough")
-   love.graphics.setLineWidth(1)
-   love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
-
-   -- cursor
-   love.graphics.setColor(180, 180, 180)
-   love.graphics.rectangle("fill", cursor[1] * fontwidth, cursor[2] * fontheight, fontwidth, fontheight)
+   modules_call("pre_draw")
 
    -- text buffer
    for l, line in ipairs(s) do
@@ -139,6 +130,9 @@ function love.draw()
    end
 
    modules_call("post_draw")
+
+   love.graphics.translate(- (d - fontwidth), - (d * 0.8 - fontheight))
+   box.draw()
 end
 
 
@@ -155,6 +149,7 @@ function love.update(dt)
    end
 
    music.update(dt)
+   box.update(dt)
 
    modules_call("update", dt)
 end
