@@ -100,10 +100,10 @@ function love.draw()
    love.graphics.setColor(255, 255, 255)
    love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
 
+   modules_call("pre_draw")
+
    local d = (love.window.getWidth() - (cols * fontwidth)) / 2
    love.graphics.translate(d - fontwidth, d*0.8 - fontheight)
-
-   modules_call("pre_draw")
 
    -- border
    love.graphics.setColor(220, 220, 220)
