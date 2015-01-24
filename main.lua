@@ -1,5 +1,5 @@
 -- shared declarations
-s = {}
+s = {{}}
 
 -- utils
 function map(table, fun)
