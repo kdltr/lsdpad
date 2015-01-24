@@ -12,7 +12,7 @@ move x y
 ins x y letter r v b
 delete x y
 insline x y
-achievement lua_filename
+ach [box] lua_filename
 
 client->server
 --------------

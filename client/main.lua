@@ -52,11 +52,22 @@ function parsers.insline(msg)
 end
 
 function parsers.achievement(msg)
+   local cmdbox = msg:match("^ach box (.+)$")
    local cmd = msg:match("^ach (.+)$")
-   local module = modules[cmd]
+   if not cmd and not cmdbox then return false end
 
+   local box = false
+   if cmdbox then
+      cmd = cmdbox
+      box = true
+   end
+   
+   print("activating "..cmd.." !")
+   if box then print("with box !!!") end
+
+   local module = modules[cmd]
    if module then
-      module.activate()
+      module.activate(box)
    end
 
    return true

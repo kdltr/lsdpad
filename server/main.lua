@@ -4,6 +4,8 @@ local server = socket.bind("0.0.0.0", "1234")
 
 local ins = {server}
 
+local achs = {}
+
 math.randomseed(os.time())
 
 -- clients info
@@ -80,6 +82,9 @@ function init_client(client)
    end
    client:settimeout(0)
    modules_call("init_client", ci[client])
+   for _, ach in ipairs(achs) do
+      client:send(string.format("ach %s\n", lua_filename))
+   end
 end
 
 local parsers = {}
@@ -286,6 +291,8 @@ function relay(msg)
 end
 
 function ach(client, lua_filename)
-   client:send(string.format("ach %s\n", lua_filename))
+   client:send(string.format("ach box %s\n", lua_filename))
+   table.insert(achs, lua_filename)
 end
+
 
