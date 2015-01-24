@@ -94,16 +94,19 @@ function love.load(args)
 end
 
 function love.draw()
-   modules_call("pre_draw")
-
    -- background
    love.graphics.setColor(255, 255, 255)
-   love.graphics.rectangle("fill", 0, 0, 800, 600)
+   love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
+
+   local d = (love.window.getWidth() - (cols * fontwidth)) / 2
+   love.graphics.translate(d - fontwidth, d*0.8 - fontheight)
+
+   modules_call("pre_draw")
 
    -- border
-   --love.graphics.setColor(180, 180, 180)
-   --love.graphics.setLineWidth(1)
-   --love.graphics.rectangle("line", fontwidth, fontheight, 70 * fontwidth, 25 * fontheight)
+   love.graphics.setColor(180, 180, 180)
+   love.graphics.setLineWidth(1)
+   love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
 
    -- cursor
    love.graphics.setColor(180, 180, 180)
@@ -161,7 +164,8 @@ end
 
 function love.mousepressed(x, y, button)
    if button == "l" then
-      local c, l = math.floor(x / fontwidth), math.floor(y / fontheight)
+      local margin = (love.window.getWidth() - (cols * fontwidth)) / 2
+      local c, l = math.floor((x - margin) / fontwidth) + 1, math.floor((y - margin*0.8) / fontheight) + 1
       print(c, l)
       send("pos " .. c .. " " .. l)
    end
