@@ -14,7 +14,7 @@ s =
    {
       { 'a', 0, 0, 255 },
       { 'b', 0, 255, 0 },
-      { ' ', 0, 255, 255 },
+      { 'c', 0, 255, 255 },
    },
    {
       { 'd', 0, 0, 255 },
@@ -50,7 +50,7 @@ function new_color()
 end
 
 function init_client(client)
-   ci[client] = { x = 1, y = 1, color = new_color()}
+   ci[client] = { x = 1, y = 1, color = new_color() }
    ins[#ins+1] = client
    client:send(string.format("dump %d\n", #s));
    for _, line in ipairs(s) do
@@ -59,6 +59,7 @@ function init_client(client)
       end
       )) .. "\n");
    end
+   client:settimeout(0)
 end
 
 local parsers = {}

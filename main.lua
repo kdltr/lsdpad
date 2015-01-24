@@ -1,6 +1,6 @@
 -- shared declarations
 s = {{}}
-cols = 80
+cols = 78
 
 -- utils
 function map(table, fun)
@@ -15,13 +15,13 @@ end
 function ins_char(x, y, char)
    table.insert(s[y], x, char)
    local cy = y
-   if #s[cy] == cols - 1 then
-      table.insert(s, cy + 1, {})
-   else
-      while #s[cy] >= cols do
-         table.insert(s[cy + 1], 1, table.remove(s[cy]))
-         cy = cy + 1
+   while #s[cy] >= cols do
+      if #s[cy] == cols then
+         table.insert(s, cy + 1, {})
+         break
       end
+      table.insert(s[cy + 1], 1, table.remove(s[cy]))
+      cy = cy + 1
    end
 end
 
