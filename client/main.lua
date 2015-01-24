@@ -43,7 +43,7 @@ end
 function parsers.delete(msg)
    local x, y = msg:match("^delete (%d+) (%d+)$")
    if x then
-      del_char(x, y)
+      del_char(tonumber(x), tonumber(y))
       return true
    end
 end
