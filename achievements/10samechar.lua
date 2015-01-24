@@ -22,7 +22,6 @@ function m.char(client, char)
 end
 
 function m.activate(box)
-  box_push('10 times the same character!') 
   if box then box_push('10 times the same character!') end
 end
 

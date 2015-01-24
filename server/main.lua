@@ -82,7 +82,7 @@ function init_client(client)
    end
    client:settimeout(0)
    modules_call("init_client", ci[client])
-   for _, ach in ipairs(achs) do
+   for _, lua_filename in ipairs(achs) do
       client:send(string.format("ach %s\n", lua_filename))
    end
 end
