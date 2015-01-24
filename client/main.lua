@@ -82,7 +82,7 @@ end
 
 -- boilerplate code
 function love.load(args)
-   local font = love.graphics.newFont("texgyrecursor-regular.otf", 20)
+   local font = love.graphics.newFont("terminus.ttf", 20)
    love.graphics.setFont(font)
    love.keyboard.setKeyRepeat(true)
 
