@@ -2,7 +2,7 @@
 local m = {}
 
 function m.char(client, char)
-   if char == string.upper(char) then
+   if char:match("%u") then
       m.activated = true
       ach('shift')
    end

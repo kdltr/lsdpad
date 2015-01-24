@@ -4,7 +4,7 @@ local x = 0
 local m = {}
 
 function m.char(ci, c)
-   if c == c:upper() then
+   if c:match("%u") then
       count = count + 1
       if x == ci.x - 1 then
          x = x + 1
