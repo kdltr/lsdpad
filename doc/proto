@@ -8,14 +8,18 @@ dump nombre_de_lignes
 ...
 ...
 
+move x y
 ins x y letter r v b
 backspace x y
 insline y
+rpc command param param param...
 
 client->server
 --------------
 
-key letter
-
-
+dir left|right|down|up
+backspace
+enter
+pos x y
+char letter
 

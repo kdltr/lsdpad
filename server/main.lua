@@ -56,6 +56,7 @@ function init_client(client)
 end
 
 function handle_msg(client, msg)
-   print(client, msg)
+   local cmd, err = client:receive('*l')
+   print(client, cmd)
 end
 
