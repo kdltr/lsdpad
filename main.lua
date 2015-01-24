@@ -38,6 +38,13 @@ function del_char(x, y)
    return true
 end
 
+function ins_line(x, y)
+   table.insert(s, y + 1, {})
+   for i = x, #s[y] do
+      table.insert(s[y + 1], 1, table.remove(s[y]))
+   end
+end
+
 
 -- loader
 function modules_load()

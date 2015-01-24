@@ -10,8 +10,8 @@ dump nombre_de_lignes
 
 move x y
 ins x y letter r v b
-suppr x y
-insline y
+delete x y
+insline x y
 rpc command param param param...
 
 client->server

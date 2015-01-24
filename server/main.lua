@@ -123,6 +123,28 @@ function parsers.dir(client, msg)
    return true
 end
 
+function parsers.newline(client, msg)
+   if msg ~= "return" then return false end
+   local cinfo = ci[client]
+   ins_line(cinfo.x, cinfo.y)
+   relay(string.format("insline %d %d\n", cinfo.x, cinfo.y))
+   for peer, peerinfo in pairs(ci) do
+      local do_move = false
+      if peerinfo.y > cinfo.y then
+         peerinfo.y = peerinfo.y + 1
+         do_move= true
+      elseif peerinfo.y == cinfo.y and peerinfo.x >= cinfo.x then
+         peerinfo.y = peerinfo.y + 1
+         peerinfo.x = peerinfo.x - cinfo.x + 1
+         do_move = true
+      end
+      if do_move then
+         peer:send(string.format("move %d %d\n", peerinfo.x, peerinfo.y))
+      end
+   end
+   return true
+end
+
 function parsers.delete(client, msg)
    if msg ~= "delete" then return false end
    local cinfo = ci[client]
