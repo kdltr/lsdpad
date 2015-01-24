@@ -123,6 +123,30 @@ function parsers.dir(client, msg)
    return true
 end
 
+function parsers.pos(client, msg)
+   local x, y = string.match(msg, "pos (%d+) (%d+)")
+   if not x then return false end
+   local cinfo = ci[client]
+   x = tonumber(x)
+   y = tonumber(y)
+   if y > #s then
+      cinfo.y = #s
+   elseif y < 1 then
+      cinfo.y = 1
+   else
+      cinfo.y = y
+   end
+   if x > #s[cinfo.y] + 1 then
+      cinfo.x = #s[cinfo.y] + 1
+   elseif x < 1 then
+      cinfo.x = 1
+   else
+      cinfo.x = x
+   end
+   client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
+   return true
+end
+
 function parsers.newline(client, msg)
    if msg ~= "return" then return false end
    local cinfo = ci[client]
