@@ -1,11 +1,5 @@
 local socket = require("socket")
 
--- Globals
--- text screen
-s = {}
-s[1] = {}
-
-msgs = {}
 
 -- Modules loading
 modules = {}
@@ -30,7 +24,14 @@ function love.draw()
    for _, module in pairs(modules) do
       if module.draw then module.draw() end
    end
-   love.graphics.print(table.concat(msgs, "\n"), 30, 30)
+
+   for l, line in ipairs(s) do
+      for c, spec in ipairs(line) do
+         local char, r, v, b = unpack(spec)
+         love.graphics.setColor(r, v, b)
+         love.graphics.print(char, c * 10, l * 10)
+      end
+   end
 end
 
 function love.update(dt)
@@ -60,7 +61,24 @@ function love.load(args)
       print("failed to connect to server")
       love.event.quit()
    end
+   init_screen()
    server:settimeout(0)
+end
+
+function init_screen()
+   local msg, err = server:receive("*l")
+   local nlines = string.match(msg, "dump (%d+)")
+
+   for i = 1, nlines do
+      print("new line")
+      s[i] = {}
+
+      local msg, err = server:receive("*l")
+      for char, r, v, b in string.gmatch(msg, "(.) (%d+) (%d+) (%d+) ") do
+         print(char, r, v, b)
+         table.insert(s[i], {char, tonumber(r), tonumber(v), tonumber(b)})
+      end
+   end
 end
 
 modules_load()
