@@ -115,7 +115,8 @@ function love.draw()
    modules_call("pre_draw")
 
    -- border
-   love.graphics.setColor(180, 180, 180)
+   love.graphics.setColor(220, 220, 220)
+   love.graphics.setLineStyle("rough")
    love.graphics.setLineWidth(1)
    love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
 
