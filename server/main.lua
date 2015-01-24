@@ -126,10 +126,54 @@ end
 function parsers.delete(client, msg)
    if msg ~= "delete" then return false end
    local cinfo = ci[client]
-   if del_char(cinfo.x, cinfo.y) then
-      relay(string.format("suppr", cinfo.x, cinfo.y))
-   end
+   parsers_do_del_char(cinfo.x, cinfo.y)
    return true
+end
+
+function parsers.backspace(client, msg)
+   if msg ~= "backspace" then return false end
+   local cinfo = ci[client]
+   local x = cinfo.x - 1
+   local y = cinfo.y
+   if x == 0 then
+      if y == 1 then return true end
+      y = y - 1
+      x = #s[y] + 1
+   end
+   parsers_do_del_char(x, y)
+   return true
+end
+
+function parsers_do_del_char(x, y)
+   local moves = {}
+   if y == #s and x > #s[#s] then return true end
+   local line_merge = x == #s[y] + 1
+   for peer, peerinfo in pairs(ci) do
+      local do_move = false
+      print(line_merge, x, y, peerinfo.x, peerinfo.y)
+      if line_merge then
+         if peerinfo.y > y + 1 then
+            peerinfo.y = peerinfo.y - 1
+            do_move = true
+         elseif peerinfo.y == y + 1 then
+            peerinfo.x = peerinfo.x + #s[y]
+            peerinfo.y = y
+            do_move = true
+         end
+      elseif peerinfo.y == y and peerinfo.x > x then
+         peerinfo.x = peerinfo.x - 1
+         do_move = true
+      end
+      if do_move then
+         moves[peer] = string.format("move %d %d\n", peerinfo.x, peerinfo.y)
+      end
+   end
+   if del_char(x, y) then
+      for peer, msg in pairs(moves) do
+         peer:send(msg)
+      end
+      relay(string.format("delete %d %d\n", x, y))
+   end
 end
 
 function parsers.char(client, msg)
