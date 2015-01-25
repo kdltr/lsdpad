@@ -20,7 +20,8 @@ return function()
    end
 
    function m.draw()
-      love.graphics.setColor(unpack(color))
+      local cr, cg, cb = unpack(color)
+      love.graphics.setColor(cr, cg, cb, (rmax - r) * 30)
       love.graphics.circle(mode, x, y, r)
    end
 
