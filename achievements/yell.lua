@@ -34,11 +34,11 @@ end
 function m.server_update(ci, dt)
    if not has_fired then return end
    t = t + dt
-   if t > 1 then
+   if t > math.random(15) then
       t = 0
       if #s == 0 then return end
       local i = math.random(#s)
-      s[i][1] = '+'
+      s[i][1] = string.char(math.random(96) + 30)
       relay(string.format('replace %d %s\n', i, s[i][1]))
    end
 end

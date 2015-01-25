@@ -19,7 +19,6 @@ function m.update(dt)
    deleteclock = deleteclock + dt
    clock = clock + dt
    if clock >= nexttime then
-      print("creating")
       nexttime = clock + math.random()^10 * 10
 
       if #glitches > nbglitch then return end
@@ -47,7 +46,6 @@ function m.update(dt)
    end
 
    if deleteclock >= 1/30 then
-      print("deleting")
       deleteclock = 0
       table.remove(glitches, math.random(#glitches))
    end
