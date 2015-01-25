@@ -5,21 +5,22 @@ local m = {}
 
 function m.ach()
    m.activated = true
+   modules["30seconds"].activated = false
    ach('ach')
 end
 
 function m.load()
-   m.activated = true
+   m.activated = false
 end
 
 function m.activate(box)
-   m.activated = false
+   m.activated = true
    if box then box_push('First achievement!') end
    music.playloop(1)
 end
 
 function m.update(dt)
-   if m.activated then return end
+   if not m.activated then return end
 
    clock = clock + dt
    if clock >= 0.5 then
@@ -29,7 +30,7 @@ function m.update(dt)
 end
 
 function m.pre_draw()
-   if m.activated then return end
+   if not m.activated then return end
 
    -- cursor
    if draw_cursor then

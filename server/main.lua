@@ -1,3 +1,5 @@
+side = "server"
+
 local socket = require("socket")
 
 local server = socket.bind("0.0.0.0", "1234")
@@ -40,6 +42,10 @@ function love.update(dt)
       print(client)
    end
 
+end
+
+function love.load(arg)
+   modules_call("load", arg)
 end
 
 function color_diff(ref, value)
@@ -282,3 +288,4 @@ function ach(lua_filename)
    modules_call("ach", lua_filename)
 end
 
+love.load(arg)
