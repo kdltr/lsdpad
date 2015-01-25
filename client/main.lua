@@ -49,7 +49,6 @@ end
 function parsers.ins(msg)
    local p, letter, r, v, b = msg:match("^ins (%d+) (.+) (%d+) (%d+) (%d+)$")
    if p then
-      print(p, letter, r, v, b)
       ins_char(tonumber(p), {letter, tonumber(r), tonumber(v), tonumber(b)})
       return true
    end
@@ -82,9 +81,6 @@ function parsers.achievement(msg)
       box = true
    end
 
-   print("activating "..cmd.." !")
-   if box then print("with box !!!") end
-
    local module = modules[cmd]
    if module then
       module.activate(box)
@@ -94,7 +90,6 @@ function parsers.achievement(msg)
 end
 
 local function handle_client_msg(msg)
-   print(msg)
    for _, parser in pairs(parsers) do
       if parser(msg) then return end
    end

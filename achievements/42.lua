@@ -4,7 +4,7 @@ local m = gs("42", "42", "The answer!")
 
 local nbglitch = 40
 
-local gw = 30
+local gw = 50
 local gh = 50
 
 local dx
@@ -34,7 +34,11 @@ function m.update(dt)
 
          for i = 0, gw-1 do
             for j = 0, gh-1 do
-               glitchdata:setPixel(i, j, screenshot:getPixel(sx + i, sy + j))
+               local r, g, b = screenshot:getPixel(sx + i, sy + j)
+               r = r - math.random(40)
+               g = g - math.random(40)
+               b = b - math.random(40)
+               glitchdata:setPixel(i, j, r, g, b)
             end
          end
 

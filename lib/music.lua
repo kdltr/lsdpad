@@ -6,7 +6,6 @@ local current
 local subcurrent
 local next
 local unlocked = {}
-local clock = 0
 
 local function stop_loops()
    for _, m in ipairs(data) do
@@ -70,11 +69,7 @@ end
 function music.update(dt)
 
    if not next then
-      clock = clock + dt
-      if clock >= math.random(60) + 60 then
-         next = choose_music()
-         clock = 0
-      end
+      next = choose_music()
    end
 
    if not current then

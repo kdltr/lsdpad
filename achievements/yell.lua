@@ -38,7 +38,7 @@ function m.server_update(ci, dt)
       t = 0
       if #s == 0 then return end
       local i = math.random(#s)
-      s[i][1] = string.char(math.random(96) + 30)
+      s[i][1] = string.char(math.random(94) + 32)
       relay(string.format('replace %d %s\n', i, s[i][1]))
    end
 end
