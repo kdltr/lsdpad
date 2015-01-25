@@ -31,7 +31,7 @@ function m.activate(box)
   music.playloop(2)
 end
 
-local sound_delay
+local sound_delay = 0
 
 function m.update(dt)
    if not m.activated then return end
