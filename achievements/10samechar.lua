@@ -38,7 +38,7 @@ function m.update(dt)
    if alpha < 0.20 then alpha = alpha + dt * 0.005 end
    t = t + dt / 200 
    sound_delay = sound_delay + dt
-   if sound_delay >= 120 then
+   if sound_delay >= 30 then
       ponay_sound:play()
       sound_delay = 0
    end
