@@ -3,6 +3,8 @@ local Drop = require("lib.drop")
 local drops = {}
 local clock = 0
 
+local sound = love.audio.newSource("assets/RubberJohnnyBubulle.wav")
+
 local m = {}
 
 local fun = function()
@@ -18,6 +20,7 @@ m.char = fun
 function m.activate(box)
    m.activated = true
    if box then box_push "Long file is long" end
+   sound:play()
 end
 
 function m.update(dt)

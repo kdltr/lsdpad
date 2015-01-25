@@ -10,6 +10,7 @@ end
 
 function m.activate(box)
    if box then box_push('Shift!') end
+   music.playloop(4)
    m.activated = true
 end
 

@@ -27,6 +27,7 @@ end
 function m.activate(box)
    if box then box_push "FURY!" end
    m.activated = true
+   music.playloop(3)
 end
 
 function m.update(dt)
