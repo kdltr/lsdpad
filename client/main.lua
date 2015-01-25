@@ -167,8 +167,9 @@ end
 
 function update_buffer_metadata()
    local x, y = 0, 0
-   for ip, c in ipairs(s) do
-      local char, r, v, b = unpack(c)
+   local ip = 1
+   while ip <= #s do
+      local char, r, v, b = unpack(s[ip])
       if ip == cursor then
          cursor_xy = {x, y}
       end
@@ -182,7 +183,12 @@ function update_buffer_metadata()
             y = y + 1
          end
       end
+      ip = ip + 1
    end
+   if ip == cursor then
+      cursor_xy = {x, y}
+   end
+
    nb_lines = y + 1
 end
 
