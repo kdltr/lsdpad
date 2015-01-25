@@ -1,3 +1,4 @@
+require("lib.music")
 local socket = require("socket")
 local box = require("lib.box")
 
