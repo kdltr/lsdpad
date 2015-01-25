@@ -19,4 +19,10 @@ function m.activate(box)
    if box then box_push "Yay! More players! \\o/" end
 end
 
+function m.update(dt)
+end
+
+function m.draw()
+end
+
 return m
