@@ -41,7 +41,7 @@ function m.update(dt)
    end
 end
 
-function m.pre_draw()
+function m.draw()
    if not m.activated then return end
 
    -- cursor

@@ -28,8 +28,15 @@ function m.update(dt)
       table.insert(drops, Drop())
    end
 
+   local to_delete = {}
    for i, d in ipairs(drops) do
       local delete = d.update(dt)
+      if delete then
+         table.insert(to_delete, i)
+      end
+   end
+   for _, i in ipairs(to_delete) do
+      table.remove(drops, i)
    end
 end
 

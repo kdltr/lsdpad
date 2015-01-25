@@ -116,10 +116,12 @@ function love.draw()
    love.graphics.setColor(255, 255, 255)
    love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
 
+   modules_call("pre_draw")
+
    local d = (love.window.getWidth() - (cols * fontwidth)) / 2
    love.graphics.translate(d, d)
 
-   modules_call("pre_draw")
+   modules_call("draw")
 
    local x, y = 0, 0
    for ip, c in ipairs(s) do
