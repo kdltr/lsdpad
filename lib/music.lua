@@ -24,10 +24,10 @@ end
 
 function music.load()
    for i = 1, 4 do
-      local intro = love.audio.newSource(prefix .. "T" .. i .. ".wav")
-      local introG = love.audio.newSource(prefix .. "T" .. i .. "Glitch.wav")
-      local loop = love.audio.newSource(prefix .. i .. ".wav")
-      local loopG = love.audio.newSource(prefix .. i .. "Glitch.wav")
+      local intro = love.audio.newSource(prefix .. "T" .. i .. ".ogg")
+      local introG = love.audio.newSource(prefix .. "T" .. i .. "Glitch.ogg")
+      local loop = love.audio.newSource(prefix .. i .. ".ogg")
+      local loopG = love.audio.newSource(prefix .. i .. "Glitch.ogg")
 
       introG:setVolume(0)
       loopG:setVolume(0)

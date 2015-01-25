@@ -2,7 +2,7 @@
 local m = {}
 
 local ponay = love.graphics.newImage('assets/ponay.png')
-local ponay_sound = love.audio.newSource('assets/RubberJohnnyPoney.wav')
+local ponay_sound = love.audio.newSource('assets/RubberJohnnyPoney.ogg')
 
 
 local t, alpha = 0.0, 0.0

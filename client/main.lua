@@ -43,7 +43,8 @@ function parsers.explode(msg)
    map_s(function (ip, cx, cy, c)
       if cep == ip then
          cex, cey = cx, cy
-         parts.add('explosion', (cx + 0.5) * fontwidth + margin, (cy + 0.5) * fontheight + margin, 120, nil, 0, 30, 5)
+         parts.add('explosion', (cx + 0.5) * fontwidth + margin, (cy + 0.5) * fontheight + margin, 120, nil, 0, -15, 5)
+         s[ip][1] = ' '
       end
    end)
    map_s(function (ip, cx, cy, c)

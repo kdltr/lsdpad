@@ -5,7 +5,7 @@ local m = gs("pony", "pony", "Friendship is magic!")
 local alpha = 0.0
 local clock = 83 - 10
 
-local sound = love.audio.newSource("assets/RubberJohnnyNeonNeon.wav")
+local sound = love.audio.newSource("assets/RubberJohnnyNeonNeon.ogg")
 
 function m.update(dt)
    if not m.activated then return end

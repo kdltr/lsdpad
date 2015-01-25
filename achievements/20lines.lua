@@ -3,7 +3,7 @@ local Drop = require("lib.drop")
 local drops = {}
 local clock = 0
 
-local sound = love.audio.newSource("assets/RubberJohnnyBubulle.wav")
+local sound = love.audio.newSource("assets/RubberJohnnyBubulle.ogg")
 
 local m = {}
 
