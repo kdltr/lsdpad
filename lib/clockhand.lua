@@ -1,9 +1,10 @@
 return function()
-   local width = 10
-   local height = 100
+   local width = 25
+   local height = 250
    local angle = math.random() * 2 * math.pi
    local factor = math.random(20) - 10
    local color = new_color()
+   color[4] = 60
    factor = factor == 0 and 1 or factor
 
    local m = {}
@@ -13,8 +14,8 @@ return function()
    end
 
    function m.draw()
-      local x = height + width / 2
-      local y = love.window.getHeight() - height
+      local x = 3 * height / 4
+      local y = love.window.getHeight() - 3 * height / 4
 
       love.graphics.translate(width / 2, 0)
       love.graphics.rotate(angle)

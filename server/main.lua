@@ -15,21 +15,6 @@ math.randomseed(os.time())
 -- clients info
 local ci = {}
 
-s =
-{
-   { 'a', 0, 0, 255 },
-   { 'b', 0, 255, 0 },
-   { 'c', 0, 255, 255 },
-   { 'nl', 0, 0, 0 },
-   { 'd', 0, 0, 255 },
-   { 'e', 255, 0, 0 },
-   { 'f', 255, 0, 255 },
-   { 'nl', 0, 0, 0 },
-   { 'g', 255, 0, 127 },
-   { 'h', 0, 0, 128 },
-   { 'i', 0, 128, 255 },
-}
-
 function love.update(dt)
    for _,v in pairs(ci) do
       modules_call("server_update", v, dt)
