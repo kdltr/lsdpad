@@ -21,6 +21,15 @@ end
 
 local parsers = {}
 
+function parsers.explode(msg)
+   local expl = msg:match("^explode ([0-9 ]+)$")
+   if not expl then return end
+   for p in msg:gmatch("(%d+)") do
+      s[tonumber(p)][1] = ' '
+   end
+   return true
+end
+
 function parsers.replace(msg)
    local p, c = msg:match("^replace (%d+) (.+)$")
    if p then

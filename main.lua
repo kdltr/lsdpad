@@ -12,6 +12,22 @@ function map(table, fun)
    return r
 end
 
+function map_s(fun)
+   local cx, cy, ip = 0, 0, 1
+   while ip <= #s do
+      c = s[ip]
+      fun(ip, cx, cy, c)
+      if c[1] == 'nl' or cx == cols - 1 then
+         cx = 0
+         cy = cy + 1
+      else
+         cx = cx + 1
+      end
+      ip = ip + 1
+   end
+   fun(ip, cx, cy, nil)
+end
+
 -- char is { "l", r, v, b }
 function ins_char(p, char)
    table.insert(s, p, char)

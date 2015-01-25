@@ -80,7 +80,7 @@ function parsers.dir(client, msg)
          p = p + 1
       end
    elseif m == "home" then
-      while p > 1 and s[p][1] ~= 'nl' do
+      while p > 1 and s[p - 1][1] ~= 'nl' do
          p = p - 1
       end
    elseif m == "up" then

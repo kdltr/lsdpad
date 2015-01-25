@@ -3,7 +3,7 @@ return function (module, seq, msg)
    local av_prop = module..'_av'
    local m = {}
 
-   function m.activate_callback()
+   function m.activate_callback(client)
    end
 
    function m.init_client(client)
@@ -16,7 +16,7 @@ return function (module, seq, msg)
          if client[av_prop] == #seq + 1 then
             ach(module)
             m.activated = true
-            m.activate_callback()
+            m.activate_callback(client)
          end
       else
          client[av_prop] = 1
