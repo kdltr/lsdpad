@@ -42,12 +42,16 @@ function m.update(dt)
          dy = math.random(love.window.getHeight() - gh)
 
          table.insert(glitches, { dx, dy, love.graphics.newImage(glitchdata) })
+         music.glitch()
       end
    end
 
    if deleteclock >= 1/30 then
       deleteclock = 0
       table.remove(glitches, math.random(#glitches))
+      if #glitches == 0 then
+         music.unglitch()
+      end
    end
 end
 

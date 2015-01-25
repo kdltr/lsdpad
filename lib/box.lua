@@ -50,7 +50,7 @@ return {
             love.graphics.setColor(80, 80, 80)
             love.graphics.rectangle("fill", x, y, width, height)
             love.graphics.setColor(255, 255, 255)
-            love.graphics.printf(queue[1], x+fontwidth, y+fontwidth, width - fontwidth * 2, "left"stie )
+            love.graphics.printf(queue[1], x+fontwidth, y+fontwidth, width - fontwidth * 2)
          end
       end
    end;
