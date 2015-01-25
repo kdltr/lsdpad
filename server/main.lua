@@ -63,22 +63,6 @@ function love.load(arg)
    modules_call("load", arg)
 end
 
-function color_diff(ref, value)
-   local r1 = math.abs(ref - value)
-   local r2 = math.abs((ref + 1) - value)
-   return math.max(0, 0.66 - r1, 0.66 - r2) / 0.66
-end
-
-function new_color()
-   local hue = math.random()
-   local r = {
-      color_diff(0, hue) * 192,
-      color_diff(0.33, hue) * 192,
-      color_diff(0.66, hue) * 192,
-   }
-   return r
-end
-
 function init_client(client)
    ci[client] = { p = 1, color = new_color(), s = client }
    ins[#ins+1] = client

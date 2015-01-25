@@ -64,7 +64,7 @@ function parsers.achievement(msg)
       cmd = cmdbox
       box = true
    end
-   
+
    print("activating "..cmd.." !")
    if box then print("with box !!!") end
 

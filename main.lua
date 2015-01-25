@@ -57,6 +57,32 @@ function modules_call(which, ...)
    end
 end
 
+local function color_diff(ref, value)
+   local r1 = math.abs(ref - value)
+   local r2 = math.abs((ref + 1) - value)
+   return math.max(0, 0.66 - r1, 0.66 - r2) / 0.66
+end
+
+function new_color()
+   local hue = math.random()
+   local r = {
+      color_diff(0, hue) * 192,
+      color_diff(0.33, hue) * 192,
+      color_diff(0.66, hue) * 192,
+   }
+   return r
+end
+
+function nb_lines()
+   local count = 0
+   for _, char in ipairs(s) do
+      if char[1] == "nl" then
+         count = count + 1
+      end
+   end
+   print("nb_lines", count)
+   return count
+end
 
 function love.load(args)
    modules_load()
