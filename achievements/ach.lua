@@ -1,5 +1,6 @@
 local clock = 0
 local draw_cursor = false
+local last_cursor = { 0, 0 }
 
 local m = {}
 
@@ -22,10 +23,21 @@ end
 function m.update(dt)
    if not m.activated then return end
 
-   clock = clock + dt
-   if clock >= 0.5 then
-      draw_cursor = not draw_cursor
-      clock = 0
+   if last_cursor[1] ~= cursor_xy[1] or
+      last_cursor[2] ~= cursor_xy[2]
+      then
+         last_cursor[1] = cursor_xy[1]
+         last_cursor[2] = cursor_xy[2]
+         clock = 0
+   else
+      clock = clock + dt
+      if clock <= 1 then
+         draw_cursor = true
+      elseif clock <= 1.3 then
+         draw_cursor = false
+      else
+         clock = 0
+      end
    end
 end
 
