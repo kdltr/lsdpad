@@ -140,9 +140,10 @@ function love.draw()
       end
    end
 
+   love.graphics.translate(-d, -d)
+
    modules_call("post_draw")
 
-   love.graphics.translate(-d, -d)
    box.draw()
 end
 

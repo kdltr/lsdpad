@@ -1,17 +1,17 @@
 local count = 1
-local x = 0
+local p = 1
 
 local m = {}
 
 function m.char(ci, c)
    if c:match("%u") then
       count = count + 1
-      if x == ci.x - 1 then
-         x = x + 1
+      if p == ci.p - 1 then
+         p = p + 1
          print(count, x)
       else
          count = 1
-         x = ci.x
+         p = ci.p
       end
    end
 
