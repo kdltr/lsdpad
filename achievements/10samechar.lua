@@ -2,6 +2,8 @@
 local m = {}
 
 local ponay = love.graphics.newImage('assets/ponay.png')
+local ponay_sound = love.audio.newSource('assets/RubberJohnnyPoney.wav')
+
 
 local t, alpha = 0.0, 0.0
 
@@ -29,10 +31,17 @@ function m.activate(box)
   music.playloop(2)
 end
 
+local sound_delay
+
 function m.update(dt)
    if not m.activated then return end
    if alpha < 0.20 then alpha = alpha + dt * 0.005 end
    t = t + dt / 200 
+   sound_delay = sound_delay + dt
+   if sound_delay >= 120 then
+      ponay_sound:play()
+      sound_delay = 0
+   end
 end
 
 function m.pre_draw()

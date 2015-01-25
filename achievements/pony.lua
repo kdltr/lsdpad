@@ -4,6 +4,12 @@ local m = gs("pony", "pony", "Friendship is magic!")
 
 local alpha = 0.0
 
+local old_activate = m.activate
+
+function m.activate(box)
+   old_activate(box)
+end
+
 function m.update(dt)
    if not m.activated then return end
    if alpha < 0.15 then alpha = alpha + dt * 0.005 end
