@@ -27,9 +27,13 @@ function m.update(dt)
    if not m.activated then return end
 
    clock = clock + dt
-   if clock >= 1 then
-      table.insert(drops, Drop())
+
+   if clock >= 43 then
+      clock = 0
+      sound:play()
    end
+
+   table.insert(drops, Drop())
 
    local to_delete = {}
    for i, d in ipairs(drops) do
