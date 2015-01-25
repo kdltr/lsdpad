@@ -21,6 +21,14 @@ end
 
 local parsers = {}
 
+function parsers.replace(msg)
+   local p, c = msg:match("^replace (%d+) (.+)$")
+   if p then
+      s[tonumber(p)][1] = c
+   end
+end
+
+
 function parsers.move(msg)
    local p = msg:match("^move (%d+)$")
    if p then

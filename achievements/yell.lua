@@ -3,7 +3,12 @@ local p = 1
 local t = 0
 local m = {}
 
+m.activated = false
+
+local has_fired = false
+
 function m.char(ci, c)
+   if has_fired then return end
    if c:match("%u") then
       count = count + 1
       if p == ci.p - 1 then
@@ -16,8 +21,9 @@ function m.char(ci, c)
    end
 
    if count == 5 then
-      m.activated = true
       ach("yell")
+      has_fired = true
+      --m.activated = true
    end
 end
 
@@ -25,13 +31,15 @@ function m.activate(box)
   if box then box_push('STOP YELLING') end
 end
 
-function m.server_update(dt)
-   if not m.activated then return end
+function m.server_update(ci, dt)
+   if not has_fired then return end
    t = t + dt
    if t > 1 then
       t = 0
+      if #s == 0 then return end
       local i = math.random(#s)
-      s[i] = '*'
+      s[i][1] = '+'
+      relay(string.format('replace %d %s\n', i, s[i][1]))
    end
 end
 

@@ -1,6 +1,6 @@
 return function()
    local width = 25
-   local height = 250
+   local height = 300
    local angle = math.random() * 2 * math.pi
    local factor = math.random(20) - 10
    local color = new_color()
@@ -17,9 +17,9 @@ return function()
       local x = 3 * height / 4
       local y = love.window.getHeight() - 3 * height / 4
 
-      love.graphics.translate(width / 2, 0)
+      love.graphics.translate(width / 2, 60)
       love.graphics.rotate(angle)
-      love.graphics.translate(- (width / 2), 0)
+      love.graphics.translate(- (width / 2), -60)
 
       love.graphics.setColor(unpack(color))
       love.graphics.rectangle("fill", 0, 0, width, height)
