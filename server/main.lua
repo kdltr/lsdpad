@@ -54,8 +54,7 @@ function init_client(client)
    client:send(string.format("dump %d\n", #s));
    client:send(table.concat(map(s, function (item)
       return string.format("%s %d %d %d\n", item[1], item[2], item[3], item[4]);
-      end
-   )));
+   end)));
    client:settimeout(0)
    modules_call("init_client", ci[client])
    for _, lua_filename in ipairs(achs) do

@@ -3,7 +3,8 @@ return function (module, seq, msg)
    local av_prop = module..'_av'
    local m = {}
 
-   function m.activate_callback(client)
+   function m.activate_callback(client, module)
+      return true
    end
 
    function m.init_client(client)
@@ -14,9 +15,12 @@ return function (module, seq, msg)
       if string.sub(seq, client[av_prop], client[av_prop]) == char then
          client[av_prop] = client[av_prop] + 1
          if client[av_prop] == #seq + 1 then
-            ach(module)
-            m.activated = true
-            m.activate_callback(client)
+            if m.activate_callback(client, module) then
+               ach(module)
+               m.activated = true
+            else
+               client[av_prop] = 1
+            end
          end
       else
          client[av_prop] = 1

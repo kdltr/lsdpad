@@ -2,25 +2,34 @@
 local gs = require 'lib.generic_sequence'
 local m = gs("boom", "boom", "Destruction")
 
-function m.activate_callback(client)
+local achieved = false
+
+function m.activate_callback(client, module)
    local x, y
+   if not achieved then
+      ach(module)
+      achieved = true
+   end
    map_s(function (ip, cx, cy)
-      if ip == client.p then
+      if ip == client.p - 1 then
          x, y = cx, cy
       end
    end)
-   local expl = {}
+   local expl = { client.p - 1 }
    map_s(function (ip, cx, cy, c)
       if not c then return end
-      q = math.max(0, 8 - math.abs(cx - x) / 2 - math.abs(cy - y)) / 8
-      if c[1] ~= 'nl' and math.random() < q then
-         table.insert(expl, ip)
+      if ip ~= client.p - 1 then 
+         q = math.max(0, 10 - math.abs(cx - x) / 2 - math.abs(cy - y)) / 10
+         if c[1] ~= 'nl' and math.random() < q then
+            table.insert(expl, ip)
+         end
       end
    end)
    for _, ip in ipairs(expl) do
-      s[ip] = ' '
+      s[ip][1] = ' '
    end
-   relay(string.format('explode %s\n', table.concat(expl, ' ')))
+   relay(string.format('explode %s \n', table.concat(expl, ' ')))
+   return false
 end
 
 return m

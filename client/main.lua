@@ -3,10 +3,14 @@ side = "client"
 require("lib.music")
 local socket = require("socket")
 local box = require("lib.box")
+local parts = require("lib.parts")
+
+local margin
 
 cursor = 1
 cursor_xy = {0, 0}
 nb_lines = 1
+
 
 local function init_screen()
    local msg, err = server:receive("*l")
@@ -21,12 +25,39 @@ end
 
 local parsers = {}
 
+function sgn(x)
+   if x < 0 then return -1
+   elseif x > 0 then return 1
+   else return 0
+   end
+end
+
 function parsers.explode(msg)
    local expl = msg:match("^explode ([0-9 ]+)$")
    if not expl then return end
-   for p in msg:gmatch("(%d+)") do
-      s[tonumber(p)][1] = ' '
+   local expl_p = {}
+   for p in msg:gmatch("(%d+) ") do
+      table.insert(expl_p, tonumber(p))
    end
+   local cep, cex, cey = table.remove(expl_p, 1)
+   map_s(function (ip, cx, cy, c)
+      if cep == ip then
+         cex, cey = cx, cy
+         parts.add('explosion', (cx + 0.5) * fontwidth + margin, (cy + 0.5) * fontheight + margin, 120, nil, 0, 30, 5)
+      end
+   end)
+   map_s(function (ip, cx, cy, c)
+      for v_, p in ipairs(expl_p) do
+         if p == ip then
+            parts.add(
+               'letter', cx * fontwidth + margin, cy * fontheight + margin, 0, s[p][1],
+               sgn(cx - cex) * (math.random() * 1000 + 200),
+               sgn(cy - cey) * (math.random() * 1000 + 200),
+               6)
+            s[p][1] = ' '
+         end
+      end
+   end)
    return true
 end
 
@@ -125,15 +156,13 @@ function love.load(args)
    modules_call("load", args)
 end
 
-
 function love.draw()
    -- background
    love.graphics.clear()
 
    modules_call("pre_draw")
 
-   local d = (love.window.getWidth() - (cols * fontwidth)) / 2
-   love.graphics.translate(d, d)
+   love.graphics.translate(margin, margin)
 
    modules_call("draw")
 
@@ -154,8 +183,9 @@ function love.draw()
       end
    end
 
-   love.graphics.translate(-d, -d)
+   love.graphics.translate(-margin, -margin)
 
+   parts.draw()
    box.draw()
 
    modules_call("post_draw")
@@ -165,6 +195,8 @@ end
 -- events handling
 
 function love.update(dt)
+   margin = (love.window.getWidth() - (cols * fontwidth)) / 2
+
    local msg, err = server:receive("*l")
    if not msg then
       if err == "closed" then
@@ -178,6 +210,7 @@ function love.update(dt)
 
    music.update(dt)
    box.update(dt)
+   parts.update(dt)
 
    modules_call("update", dt)
 end
