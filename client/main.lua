@@ -106,6 +106,8 @@ function love.load(args)
    fontwidth = font:getWidth("m")
    fontheight = font:getHeight("m")
 
+   love.graphics.setBackgroundColor(255, 255, 255)
+
    music.load()
 
    server = socket.connect(args[3], tonumber(args[4]))
@@ -119,10 +121,10 @@ function love.load(args)
    modules_call("load", args)
 end
 
+
 function love.draw()
    -- background
-   love.graphics.setColor(255, 255, 255)
-   love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
+   love.graphics.clear()
 
    modules_call("pre_draw")
 
@@ -150,9 +152,9 @@ function love.draw()
 
    love.graphics.translate(-d, -d)
 
-   modules_call("post_draw")
-
    box.draw()
+
+   modules_call("post_draw")
 end
 
 

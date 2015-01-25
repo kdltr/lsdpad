@@ -2,7 +2,7 @@ return function()
    local width = 25
    local height = 300
    local angle = math.random() * 2 * math.pi
-   local factor = math.random(20) - 10
+   local factor = math.random(10) - 5
    local color = new_color()
    color[4] = 60
    factor = factor == 0 and 1 or factor
