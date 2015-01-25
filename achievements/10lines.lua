@@ -1,7 +1,6 @@
 local m = {}
 
 local fun = function()
-   print("==== " .. #s)
    if #s >= 20 then
       ach("10lines")
       m.activated = true

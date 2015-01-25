@@ -42,7 +42,7 @@ return {
       end
    end;
 
-   pre_draw = function()
+   draw = function()
       for _,text in ipairs(queue) do
          if showed then
             local x, y = movement(clock)

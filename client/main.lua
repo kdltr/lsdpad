@@ -1,4 +1,5 @@
 local socket = require("socket")
+local box = require("lib.box")
 
 cursor = 1
 
@@ -92,6 +93,8 @@ function love.load(args)
    fontwidth = font:getWidth("m")
    fontheight = font:getHeight("m")
 
+   music.load()
+
    server = socket.connect(args[3], tonumber(args[4]))
    if not server then
       print("failed to connect to server")
@@ -108,20 +111,10 @@ function love.draw()
    love.graphics.setColor(255, 255, 255)
    love.graphics.rectangle("fill", 0, 0, love.window.getWidth(), love.window.getHeight())
 
-   modules_call("pre_draw")
-
    local d = (love.window.getWidth() - (cols * fontwidth)) / 2
    love.graphics.translate(d, d)
 
-   -- border
-   love.graphics.setColor(220, 220, 220)
-   love.graphics.setLineStyle("rough")
-   love.graphics.setLineWidth(1)
-   --TODO love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
-
-   -- cursor
-   love.graphics.setColor(180, 180, 180)
-   --TODO love.graphics.rectangle("fill", cursor[1] * fontwidth, cursor[2] * fontheight, fontwidth, fontheight)
+   modules_call("pre_draw")
 
    local x = 0
    local y = 0
@@ -142,6 +135,9 @@ function love.draw()
    end
 
    modules_call("post_draw")
+
+   love.graphics.translate(-d, -d)
+   box.draw()
 end
 
 
@@ -156,6 +152,9 @@ function love.update(dt)
    else
       handle_client_msg(msg)
    end
+
+   music.update(dt)
+   box.update(dt)
 
    modules_call("update", dt)
 end

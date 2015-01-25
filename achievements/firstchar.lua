@@ -1,4 +1,3 @@
-
 local m = {}
 
 function m.char()
@@ -7,7 +6,7 @@ function m.char()
 end
 
 function m.activate(box)
-  if box then box_push('You first character!') end
+   if box then box_push('You first character!') end
 end
 
 return m

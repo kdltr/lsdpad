@@ -48,7 +48,12 @@ end
 function modules_call(which, ...)
    for _, module in pairs(modules) do
       local method = module[which]
-      if method and not module.activated then method(...) end
+      if method and
+         (side == "server" and not module.activated
+         or side == "client" and module.activated)
+         then
+            method(...)
+         end
    end
 end
 
