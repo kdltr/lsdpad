@@ -229,3 +229,4 @@ function ach(lua_filename)
    modules_call("ach", lua_filename)
 end
 
+love.load(arg)
