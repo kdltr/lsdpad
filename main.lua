@@ -1,5 +1,5 @@
 -- shared declarations
-s = {{}}
+s = {}
 cols = 60
 modules = {}
 
@@ -13,37 +13,16 @@ function map(table, fun)
 end
 
 -- char is { "l", r, v, b }
-function ins_char(x, y, char)
-   table.insert(s[y], x, char)
-   local cy = y
-   while #s[cy] >= cols do
-      if #s[cy] == cols then
-         table.insert(s, cy + 1, {})
-         break
-      end
-      table.insert(s[cy + 1], 1, table.remove(s[cy]))
-      cy = cy + 1
-   end
+function ins_char(p, char)
+   table.insert(s, p, char)
 end
 
-function del_char(x, y)
-   if x <= #s[y] then
-      table.remove(s[y], x)
-   elseif x > #s[y] then
-      if y == #s then return false end
-      for _, v in ipairs(s[y + 1]) do
-         table.insert(s[y], v)
-      end
-      table.remove(s, y + 1)
-   end
-   return true
+function del_char(p)
+   table.remove(s, p)
 end
 
-function ins_line(x, y)
-   table.insert(s, y + 1, {})
-   for i = x, #s[y] do
-      table.insert(s[y + 1], 1, table.remove(s[y]))
-   end
+function ins_line(p)
+   table.insert(s, p, { 'nl', 0, 0, 0 })
 end
 
 

@@ -15,21 +15,17 @@ local ci = {}
 
 s =
 {
-   {
-      { 'a', 0, 0, 255 },
-      { 'b', 0, 255, 0 },
-      { 'c', 0, 255, 255 },
-   },
-   {
-      { 'd', 0, 0, 255 },
-      { 'e', 255, 0, 0 },
-      { 'f', 255, 0, 255 },
-   },
-   {
-      { 'g', 255, 0, 127 },
-      { 'h', 0, 0, 128 },
-      { 'i', 0, 128, 255 },
-   },
+   { 'a', 0, 0, 255 },
+   { 'b', 0, 255, 0 },
+   { 'c', 0, 255, 255 },
+   { 'nl', 0, 0, 0 },
+   { 'd', 0, 0, 255 },
+   { 'e', 255, 0, 0 },
+   { 'f', 255, 0, 255 },
+   { 'nl', 0, 0, 0 },
+   { 'g', 255, 0, 127 },
+   { 'h', 0, 0, 128 },
+   { 'i', 0, 128, 255 },
 }
 
 function love.update(dt)
@@ -78,15 +74,13 @@ function new_color()
 end
 
 function init_client(client)
-   ci[client] = { x = 1, y = 1, color = new_color(), s = client }
+   ci[client] = { p = 1, color = new_color(), s = client }
    ins[#ins+1] = client
    client:send(string.format("dump %d\n", #s));
-   for _, line in ipairs(s) do
-      client:send(table.concat(map(line, function (item)
-         return string.format("%s %d %d %d ", item[1], item[2], item[3], item[4]);
+   client:send(table.concat(map(s, function (item)
+      return string.format("%s %d %d %d\n", item[1], item[2], item[3], item[4]);
       end
-      )) .. "\n");
-   end
+   )));
    client:settimeout(0)
    modules_call("init_client", ci[client])
    for _, lua_filename in ipairs(achs) do
@@ -106,91 +100,53 @@ function parsers.dir(client, msg)
    if not m then return false end
    local cinfo = ci[client]
    if m == "end" then
-      cinfo.x = #s[cinfo.y] + 1
+      while p < #s + 1 and s[cinfo.p][0] ~= 'nl' do
+         p = p + 1
+      end
    elseif m == "home" then
-      cinfo.x = 1
+      while p > 1 and s[cinfo.p][0] ~= 'nl' do
+         p = p - 1
+      end
    elseif m == "up" then
-      if cinfo.y > 1 then
-         cinfo.y = cinfo.y - 1;
-         if cinfo.x > #s[cinfo.y] + 1 then
-            cinfo.x = #s[cinfo.y] + 1
-         end
-      else
-         cinfo.x = 1
-      end
+      -- TODO
    elseif m == "left" then
-      if cinfo.x == 1 and cinfo.y > 1 then
-         cinfo.y = cinfo.y - 1
-         cinfo.x = #s[cinfo.y] + 1
-      elseif cinfo.x > 1 then
-         cinfo.x = cinfo.x - 1
-      end
+      if cinfo.p > 1 then cinfo.p = cinfo.p - 1 end
    elseif m == "down" then
-      if cinfo.y < #s then
-         cinfo.y = cinfo.y + 1
-         if cinfo.x > #s[cinfo.y] + 1 then
-            cinfo.x = #s[cinfo.y] + 1
-         end
-      else
-         cinfo.x = #s[cinfo.y] + 1
-      end
+      -- TODO
    elseif m == "right" then
-      if cinfo.x == #s[cinfo.y] + 1 then
-         if cinfo.y < #s then
-            cinfo.x = 1
-            cinfo.y = cinfo.y + 1
-         end
-      else
-         cinfo.x = cinfo.x + 1
-      end
+      if cinfo.p < #s + 1 then cinfo.p = cinfo.p + 1 end
    end
-   client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
+   client:send(string.format("move %d\n", cinfo.p))
    modules_call("dir", cinfo, m)
    return true
 end
 
 function parsers.pos(client, msg)
-   local x, y = string.match(msg, "pos (%d+) (%d+)")
-   if not x then return false end
+   local p = string.match(msg, "pos (%d+)")
+   if not p then return false end
    local cinfo = ci[client]
-   x = tonumber(x)
-   y = tonumber(y)
-   if y > #s then
-      cinfo.y = #s
-   elseif y < 1 then
-      cinfo.y = 1
+   p = tonumber(p)
+   if p < 1 then
+      cinfo.p = 1
+   elseif p > #s + 1 then
+      cinfo.p = #s + 1
    else
-      cinfo.y = y
+      cinfo.p = p
    end
-   if x > #s[cinfo.y] + 1 then
-      cinfo.x = #s[cinfo.y] + 1
-   elseif x < 1 then
-      cinfo.x = 1
-   else
-      cinfo.x = x
-   end
-   client:send(string.format("move %d %d\n", cinfo.x, cinfo.y))
-   modules_call("pos", cinfo, x, y)
+   client:send(string.format("move %d\n", cinfo.p))
+   modules_call("pos", cinfo, cinfo.p)
    return true
 end
 
 function parsers.newline(client, msg)
    if msg ~= "return" then return false end
    local cinfo = ci[client]
-   ins_line(cinfo.x, cinfo.y)
-   relay(string.format("insline %d %d\n", cinfo.x, cinfo.y))
+   ins_line(cinfo.p)
+   relay(string.format("insline %d\n", cinfo.p))
    for peer, peerinfo in pairs(ci) do
-      local do_move = false
-      if peerinfo.y > cinfo.y then
-         peerinfo.y = peerinfo.y + 1
-         do_move= true
-      elseif peerinfo.y == cinfo.y and peerinfo.x >= cinfo.x then
-         peerinfo.y = peerinfo.y + 1
-         peerinfo.x = peerinfo.x - cinfo.x + 1
-         do_move = true
-      end
-      if do_move then
-         peer:send(string.format("move %d %d\n", peerinfo.x, peerinfo.y))
+      if peerinfo.p >= cinfo.p then
+         peerinfo.p = peerinfo.p + 1
+         peer:send(string.format("move %d\n", peerinfo.p))
       end
    end
    modules_call("newline", cinfo)
@@ -200,7 +156,7 @@ end
 function parsers.delete(client, msg)
    if msg ~= "delete" then return false end
    local cinfo = ci[client]
-   parsers_do_del_char(cinfo.x, cinfo.y)
+   parsers_do_del_char(cinfo.p)
    modules_call("delete", cinfo)
    return true
 end
@@ -208,48 +164,25 @@ end
 function parsers.backspace(client, msg)
    if msg ~= "backspace" then return false end
    local cinfo = ci[client]
-   local x = cinfo.x - 1
-   local y = cinfo.y
-   if x == 0 then
-      if y == 1 then return true end
-      y = y - 1
-      x = #s[y] + 1
-   end
-   parsers_do_del_char(x, y)
+   if cinfo.p == 1 then return true end
+   parsers_do_del_char(cinfo.p - 1)
    modules_call("backspace", cinfo)
    return true
 end
 
-function parsers_do_del_char(x, y)
+function parsers_do_del_char(p)
    local moves = {}
-   if y == #s and x > #s[#s] then return true end
-   local line_merge = x == #s[y] + 1
    for peer, peerinfo in pairs(ci) do
-      local do_move = false
-      print(line_merge, x, y, peerinfo.x, peerinfo.y)
-      if line_merge then
-         if peerinfo.y > y + 1 then
-            peerinfo.y = peerinfo.y - 1
-            do_move = true
-         elseif peerinfo.y == y + 1 then
-            peerinfo.x = peerinfo.x + #s[y]
-            peerinfo.y = y
-            do_move = true
-         end
-      elseif peerinfo.y == y and peerinfo.x > x then
-         peerinfo.x = peerinfo.x - 1
-         do_move = true
-      end
-      if do_move then
-         moves[peer] = string.format("move %d %d\n", peerinfo.x, peerinfo.y)
+      if (peerinfo.p > p) then
+         peerinfo.p = peerinfo.p - 1
+         moves[peer] = string.format("move %d\n", peerinfo.p)
       end
    end
-   if del_char(x, y) then
-      for peer, msg in pairs(moves) do
-         peer:send(msg)
-      end
-      relay(string.format("delete %d %d\n", x, y))
+   del_char(p)
+   for peer, msg in pairs(moves) do
+      peer:send(msg)
    end
+   relay(string.format("delete %d\n", p))
 end
 
 function parsers.char(client, msg)
@@ -257,31 +190,20 @@ function parsers.char(client, msg)
    if not m then return false end
    local cinfo = ci[client]
 
-   local x = cinfo.x
-   local y = cinfo.y
    ins_char(
-      x, y,
+      cinfo.p,
       { m, cinfo.color[1], cinfo.color[2], cinfo.color[3] }
    )
 
    relay(string.format(
-      "ins %d %d %s %d %d %d\n",
-      x, y, m,
-      cinfo.color[1], cinfo.color[2], cinfo.color[3]
+      "ins %d %s %d %d %d\n",
+      cinfo.p, m, cinfo.color[1], cinfo.color[2], cinfo.color[3]
    ))
 
    for peer, peerinfo in pairs(ci) do
-      if peerinfo.y == y and peerinfo.x >= x then
-         peerinfo.x = peerinfo.x + 1
-         if peerinfo.x > cols then
-            peerinfo.x = 1
-            peerinfo.y = peerinfo.y + 1
-         end
-         peer:send(
-            string.format(
-               "move %d %d\n",
-               peerinfo.x, peerinfo.y
-         ))
+      if peerinfo.p >= cinfo.p then
+         peerinfo.p = peerinfo.p + 1
+         peer:send(string.format("move %d\n", peerinfo.p))
       end
    end
 

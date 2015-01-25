@@ -1,52 +1,49 @@
 local socket = require("socket")
 
-cursor = {1, 1}
+cursor = 1
 
 local function init_screen()
    local msg, err = server:receive("*l")
-   local nlines = string.match(msg, "dump (%d+)")
+   local n = string.match(msg, "dump (%d+)")
 
-   for i = 1, nlines do
-      s[i] = {}
-
-      local msg, err = server:receive("*l")
-      for char, r, v, b in string.gmatch(msg, "(.-) (%d+) (%d+) (%d+) ") do
-         table.insert(s[i], {char, tonumber(r), tonumber(v), tonumber(b)})
-      end
+   for i = 1, n do
+      local msg = server:receive("*l")
+      local char, r, v, b = string.match(msg, "(.-) (%d+) (%d+) (%d+)")
+      table.insert(s, {char, tonumber(r), tonumber(v), tonumber(b)})
    end
 end
 
 local parsers = {}
 
 function parsers.move(msg)
-   local x, y = msg:match("^move (%d+) (%d+)$")
-   if x then
-      cursor = {x, y}
+   local p = msg:match("^move (%d+)$")
+   if p then
+      cursor = p
       return true
    end
 end
 
 function parsers.ins(msg)
-   local x, y, letter, r, v, b = msg:match("^ins (%d+) (%d+) (.+) (%d+) (%d+) (%d+)$")
-   if x then
-      print(x, y, letter, r, v, b)
-      ins_char(tonumber(x), tonumber(y), {letter, tonumber(r), tonumber(v), tonumber(b)})
+   local p, letter, r, v, b = msg:match("^ins (%d+) (.+) (%d+) (%d+) (%d+)$")
+   if p then
+      print(p, letter, r, v, b)
+      ins_char(tonumber(p), {letter, tonumber(r), tonumber(v), tonumber(b)})
       return true
    end
 end
 
 function parsers.delete(msg)
-   local x, y = msg:match("^delete (%d+) (%d+)$")
-   if x then
-      del_char(tonumber(x), tonumber(y))
+   local p = msg:match("^delete (%d+)$")
+   if p then
+      del_char(tonumber(p))
       return true
    end
 end
 
 function parsers.insline(msg)
-   local x, y = msg:match("^insline (%d+) (%d+)$")
-   if x then
-      ins_line(tonumber(x), tonumber(y))
+   local p = msg:match("^insline (%d+)$")
+   if p then
+      ins_line(tonumber(p))
       return true
    end
 end
@@ -114,24 +111,33 @@ function love.draw()
    modules_call("pre_draw")
 
    local d = (love.window.getWidth() - (cols * fontwidth)) / 2
-   love.graphics.translate(d - fontwidth, d*0.8 - fontheight)
+   love.graphics.translate(d, d)
 
    -- border
    love.graphics.setColor(220, 220, 220)
    love.graphics.setLineStyle("rough")
    love.graphics.setLineWidth(1)
-   love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
+   --TODO love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
 
    -- cursor
    love.graphics.setColor(180, 180, 180)
-   love.graphics.rectangle("fill", cursor[1] * fontwidth, cursor[2] * fontheight, fontwidth, fontheight)
+   --TODO love.graphics.rectangle("fill", cursor[1] * fontwidth, cursor[2] * fontheight, fontwidth, fontheight)
 
-   -- text buffer
-   for l, line in ipairs(s) do
-      for c, spec in ipairs(line) do
-         local char, r, v, b = unpack(spec)
+   local x = 0
+   local y = 0
+   for _, c in ipairs(s) do
+      local char, r, v, b = unpack(c)
+      if char == 'nl' then
+         x = 0
+         y = y + 1
+      else
          love.graphics.setColor(r, v, b)
-         love.graphics.print(char, c * fontwidth, l * fontheight)
+         love.graphics.print(char, x * fontwidth, y * fontheight)
+         x = x + 1
+         if x == cols then
+            x = 0
+            y = y + 1
+         end
       end
    end
 
@@ -177,14 +183,13 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(x, y, button)
-   if button == "l" then
-      local margin = (love.window.getWidth() - (cols * fontwidth)) / 2
-      local c, l = math.floor((x - margin) / fontwidth) + 1, math.floor((y - margin*0.8) / fontheight) + 1
-      print(c, l)
-      send("pos " .. c .. " " .. l)
-   end
-
-   modules_call("mousepressed", x, y, button)
+--   if button == "l" then
+--      local margin = (love.window.getWidth() - (cols * fontwidth)) / 2
+--      local c, l = math.floor((x - margin) / fontwidth) + 1, math.floor((y - margin*0.8) / fontheight) + 1
+--      print(c, l)
+--      send("pos " .. c .. " " .. l)
+--   end
+--   modules_call("mousepressed", x, y, button)
 end
 
 love.load(arg)
