@@ -89,23 +89,53 @@ function parsers.dir(client, msg)
    local m = string.match(msg, "dir (%a+)")
    if not m then return false end
    local cinfo = ci[client]
+   local p = cinfo.p
    if m == "end" then
-      while p < #s + 1 and s[cinfo.p][0] ~= 'nl' do
+      while p < #s + 1 and s[p][1] ~= 'nl' do
          p = p + 1
       end
    elseif m == "home" then
-      while p > 1 and s[cinfo.p][0] ~= 'nl' do
+      while p > 1 and s[p][1] ~= 'nl' do
          p = p - 1
       end
    elseif m == "up" then
-      -- TODO
+      local np = p
+      while np > 1 and s[np - 1][1] ~= 'nl' do
+         np = np - 1
+      end
+      if np == 1 then return true end
+      local offset = p - np
+      np = np - 1
+      while np > 1 and s[np - 1][1] ~= 'nl' do
+         np = np - 1
+      end
+      while offset > 0 and s[np][1] ~= 'nl' do
+         np = np + 1
+         offset = offset - 1
+      end
+      p = np
    elseif m == "left" then
-      if cinfo.p > 1 then cinfo.p = cinfo.p - 1 end
+      if p > 1 then p = p - 1 end
    elseif m == "down" then
-      -- TODO
+      local np = p
+      while np > 1 and s[np - 1][1] ~= 'nl' do
+         np = np - 1
+      end
+      local offset = p - np
+      while np < #s + 1 and s[np][1] ~= 'nl' do
+         np = np + 1
+      end
+      if np == #s + 1 then return true end
+      np = np + 1
+      while offset > 0 and np < #s + 1 and s[np][1] ~= 'nl' do
+         np = np + 1
+         offset = offset - 1
+      end
+      p = np
    elseif m == "right" then
-      if cinfo.p < #s + 1 then cinfo.p = cinfo.p + 1 end
+      if p < #s + 1 then p = p + 1 end
    end
+   cinfo.p = p
    client:send(string.format("move %d\n", cinfo.p))
    modules_call("dir", cinfo, m)
    return true
