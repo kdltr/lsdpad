@@ -13,7 +13,7 @@ function m.server_update(ci, dt)
    clock = clock + dt
    print(clock)
 
-   if clock >= 10 then
+   if clock >= 30 then
       ach("30seconds")
       m.activated = true
    end
