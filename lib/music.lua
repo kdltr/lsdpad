@@ -2,16 +2,25 @@ music = {}
 
 local prefix = "assets/RubberJohnny"
 local data = {}
-local queue = {}
 local current
 local subcurrent
 local next
+local unlocked = {}
+local clock = 0
 
 local function stop_loops()
    for _, m in ipairs(data) do
       m[1]:stop()
       m[2]:stop()
    end
+end
+
+local function choose_music()
+   local t = {}
+   for id, _ in pairs(unlocked) do
+      table.insert(t, id)
+   end
+   return t[math.random(#t)]
 end
 
 function music.load()
@@ -24,6 +33,7 @@ function music.load()
 end
 
 function music.playloop(num)
+   unlocked[num] = true
    next = num
 end
 
@@ -35,6 +45,13 @@ function music.stoploop()
 end
 
 function music.update(dt)
+   clock = clock + dt
+
+   if clock >= math.random(60) + 60 then
+      next = choose_music()
+      clock = 0
+   end
+
    if not current then
       if next then
          current = next
