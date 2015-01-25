@@ -221,7 +221,33 @@ function love.mousepressed(x, y, button)
 --      print(c, l)
 --      send("pos " .. c .. " " .. l)
 --   end
---   modules_call("mousepressed", x, y, button)
+--   if button == 1 then
+--      local x, y = 0, 0
+--      local ip = 1
+--      while ip <= #s do
+--         local char, r, v, b = unpack(s[ip])
+--         if ip == cursor then
+--            cursor_xy = {x, y}
+--         end
+--         if char == 'nl' then
+--            x = 0
+--            y = y + 1
+--         else
+--            x = x + 1
+--            if x == cols then
+--               x = 0
+--               y = y + 1
+--            end
+--         end
+--         ip = ip + 1
+--      end
+--      if ip == cursor then
+--         cursor_xy = {x, y}
+--      end
+--
+--      nb_lines = y + 1
+--   end
+   modules_call("mousepressed", x, y, button)
 end
 
 love.load(arg)
