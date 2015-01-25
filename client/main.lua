@@ -5,6 +5,8 @@ local socket = require("socket")
 local box = require("lib.box")
 
 cursor = 1
+cursor_xy = {0, 0}
+nb_lines = 1
 
 local function init_screen()
    local msg, err = server:receive("*l")
@@ -22,7 +24,7 @@ local parsers = {}
 function parsers.move(msg)
    local p = msg:match("^move (%d+)$")
    if p then
-      cursor = p
+      cursor = tonumber(p)
       return true
    end
 end
@@ -119,9 +121,8 @@ function love.draw()
 
    modules_call("pre_draw")
 
-   local x = 0
-   local y = 0
-   for _, c in ipairs(s) do
+   local x, y = 0, 0
+   for ip, c in ipairs(s) do
       local char, r, v, b = unpack(c)
       if char == 'nl' then
          x = 0
@@ -156,10 +157,33 @@ function love.update(dt)
       handle_client_msg(msg)
    end
 
+   update_buffer_metadata()
+
    music.update(dt)
    box.update(dt)
 
    modules_call("update", dt)
+end
+
+function update_buffer_metadata()
+   local x, y = 0, 0
+   for ip, c in ipairs(s) do
+      local char, r, v, b = unpack(c)
+      if ip == cursor then
+         cursor_xy = {x, y}
+      end
+      if char == 'nl' then
+         x = 0
+         y = y + 1
+      else
+         x = x + 1
+         if x == cols then
+            x = 0
+            y = y + 1
+         end
+      end
+   end
+   nb_lines = y + 1
 end
 
 function love.textinput(text)

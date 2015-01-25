@@ -35,14 +35,14 @@ function m.pre_draw()
    -- cursor
    if draw_cursor then
       love.graphics.setColor(180, 180, 180)
-      love.graphics.rectangle("fill", cursor[1] * fontwidth, cursor[2] * fontheight, fontwidth, fontheight)
+      love.graphics.rectangle("fill", cursor_xy[1] * fontwidth, cursor_xy[2] * fontheight, fontwidth, fontheight)
    end
 
    -- border
    love.graphics.setColor(220, 220, 220)
    love.graphics.setLineStyle("rough")
    love.graphics.setLineWidth(1)
-   love.graphics.rectangle("line", fontwidth, fontheight, cols * fontwidth, #s * fontheight)
+   love.graphics.rectangle("line", 0, 0, cols * fontwidth, nb_lines * fontheight)
 end
 
 return m
