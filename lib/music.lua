@@ -45,11 +45,13 @@ function music.stoploop()
 end
 
 function music.update(dt)
-   clock = clock + dt
 
-   if clock >= math.random(60) + 60 then
-      next = choose_music()
-      clock = 0
+   if not next then
+      clock = clock + dt
+      if clock >= math.random(60) + 60 then
+         next = choose_music()
+         clock = 0
+      end
    end
 
    if not current then
