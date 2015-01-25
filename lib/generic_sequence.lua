@@ -21,6 +21,7 @@ return function (module, seq, msg)
 
    function m.activate(box)
      if box then box_push(msg) end
+     m.activated = true
    end
 
    return m
