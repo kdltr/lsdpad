@@ -6,6 +6,7 @@ local current
 local subcurrent
 local next
 local unlocked = {}
+local clock = 0
 
 local function stop_loops()
    for _, m in ipairs(data) do
@@ -67,31 +68,35 @@ function music.stoploop()
 end
 
 function music.update(dt)
+   clock = clock + dt
 
-   if not next then
+   if not next and clock >= 60 + math.random(60) then
+      print("random")
+      clock = 0
       next = choose_music()
-   end
-
-   if not current then
-      if next then
-         current = next
+      if next == current then
          next = nil
-         subcurrent = 1
-
-         print("playing", current, subcurrent)
-         data[current][subcurrent]:play()
-         data[current][subcurrent+2]:play()
       end
    end
 
-   if subcurrent == 1 and not data[current][subcurrent]:isPlaying() then
-      subcurrent = 2
+   if not current and next then
+      print("not current")
+      current = next
+      subcurrent = 1
+      next = nil
 
       print("playing", current, subcurrent)
       data[current][subcurrent]:play()
       data[current][subcurrent+2]:play()
-   elseif subcurrent == 2 and not data[current][subcurrent]:isPlaying() then
-      if next then
+      print("current", current, subcurrent, data[current][subcurrent]:isPlaying())
+      clock = 0
+   end
+
+   if current and not data[current][subcurrent]:isPlaying() then
+      if subcurrent == 1 then
+         subcurrent = 2
+         clock = 0
+      elseif subcurrent == 2 and next then
          current = next
          next = nil
          subcurrent = 1
