@@ -159,7 +159,7 @@ end
 
 function love.draw()
    -- background
-   love.graphics.clear()
+   love.graphics.clear(255,255,255)
 
    modules_call("pre_draw")
 
@@ -196,7 +196,7 @@ end
 -- events handling
 
 function love.update(dt)
-   margin = (love.window.getWidth() - (cols * fontwidth)) / 2
+   margin = (love.graphics.getWidth() - (cols * fontwidth)) / 2
 
    local msg, err = server:receive("*l")
    if not msg then
@@ -267,7 +267,7 @@ end
 
 function love.mousepressed(x, y, button)
 --   if button == "l" then
---      local margin = (love.window.getWidth() - (cols * fontwidth)) / 2
+--      local margin = (love.graphics.getWidth() - (cols * fontwidth)) / 2
 --      local c, l = math.floor((x - margin) / fontwidth) + 1, math.floor((y - margin*0.8) / fontheight) + 1
 --      print(c, l)
 --      send("pos " .. c .. " " .. l)

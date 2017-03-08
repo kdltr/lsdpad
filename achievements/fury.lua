@@ -38,7 +38,7 @@ end
 
 function m.pre_draw()
    if not m.activated or t > 250 then return end
-   local cx, cy = love.window.getWidth() / 2, love.window.getHeight() / 2
+   local cx, cy = love.graphics.getWidth() / 2, love.graphics.getHeight() / 2
    love.graphics.setColor(math.min(t, 255), 0, 0, math.max(0, math.min(50, 250 - t)))
    local step = 2 * math.pi / 64.0
    for i = 0, 63 do

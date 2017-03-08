@@ -23,7 +23,7 @@ function m.pre_draw()
    if not m.activated then return end
    r = math.pow(math.random(), 12)
    love.graphics.setColor(0, 0, 0, 255 * (alpha * r))
-   love.graphics.rectangle('fill', 0, 0, love.window.getWidth(), love.window.getHeight())
+   love.graphics.rectangle('fill', 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
 end
 
 return m

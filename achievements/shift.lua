@@ -32,7 +32,7 @@ function m.update(dt)
             txt = txt .. s[i][1]
          end
       end
-      table.insert(txts, { x = love.window.getWidth(), y = math.random() * love.window.getHeight(), v = math.random(), s = math.random(), txt = txt })
+      table.insert(txts, { x = love.graphics.getWidth(), y = math.random() * love.graphics.getHeight(), v = math.random(), s = math.random(), txt = txt })
       t = 0
    end
 end

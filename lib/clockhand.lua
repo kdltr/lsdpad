@@ -15,7 +15,7 @@ return function()
 
    function m.draw()
       local x = 3 * height / 4
-      local y = love.window.getHeight() - 3 * height / 4
+      local y = love.graphics.getHeight() - 3 * height / 4
 
       love.graphics.translate(width / 2, 60)
       love.graphics.rotate(angle)

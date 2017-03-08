@@ -29,8 +29,8 @@ function m.update(dt)
          local gw = math.random(gw) + 5
          local gh = math.random(gh) + 10
          local glitchdata = love.image.newImageData(gw, gh)
-         local sx = math.random(love.window.getWidth() - gw)
-         local sy = math.random(love.window.getHeight() - gh)
+         local sx = math.random(love.graphics.getWidth() - gw)
+         local sy = math.random(love.graphics.getHeight() - gh)
 
          for i = 0, gw-1 do
             for j = 0, gh-1 do
@@ -42,8 +42,8 @@ function m.update(dt)
             end
          end
 
-         dx = math.random(love.window.getWidth() - gw)
-         dy = math.random(love.window.getHeight() - gh)
+         dx = math.random(love.graphics.getWidth() - gw)
+         dy = math.random(love.graphics.getHeight() - gh)
 
          table.insert(glitches, { dx, dy, love.graphics.newImage(glitchdata) })
          music.glitch()

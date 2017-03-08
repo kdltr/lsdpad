@@ -47,7 +47,7 @@ end
 function m.pre_draw()
    if not m.activated then return end
    love.graphics.setColor(255, 255, 255, alpha * 255)
-   love.graphics.draw(ponay, love.window.getWidth() / 2, love.window.getHeight() / 2, t, 0.5, 0.5, ponay:getWidth() / 2, ponay:getHeight() / 2)
+   love.graphics.draw(ponay, love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, t, 0.5, 0.5, ponay:getWidth() / 2, ponay:getHeight() / 2)
 end
 
 return m

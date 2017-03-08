@@ -1,6 +1,6 @@
 return function()
-   local x = math.random(love.window.getWidth())
-   local y = math.random(love.window.getHeight())
+   local x = math.random(love.graphics.getWidth())
+   local y = math.random(love.graphics.getHeight())
    local rmax = math.random(15)
    local mode = math.random(2) == 1 and "fill" or "line"
    local color = new_color()

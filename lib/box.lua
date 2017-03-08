@@ -11,15 +11,15 @@ function box_push(name)
 end
 
 local function movement()
-   local x = love.window.getWidth() - width
+   local x = love.graphics.getWidth() - width
    local y
 
    if clock < 1 then -- attack
-      y = love.window.getHeight() - clock * height
+      y = love.graphics.getHeight() - clock * height
    elseif clock >= 1 and clock <= limit - 1 then -- sustain
-      y = love.window.getHeight() - height
+      y = love.graphics.getHeight() - height
    else -- decay
-      y = love.window.getHeight() - height + (clock - (limit - 1)) * height
+      y = love.graphics.getHeight() - height + (clock - (limit - 1)) * height
    end
 
    return x, y

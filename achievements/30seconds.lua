@@ -47,7 +47,7 @@ end
 function m.pre_draw()
    if not m.activated then return end
    local x = 100
-   local y = love.window.getHeight() - 100
+   local y = love.graphics.getHeight() - 100
 
    love.graphics.push()
    love.graphics.translate(x, y)
